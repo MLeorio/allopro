@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 
-from .services import generate_otp, send_otp_whatsapp, send_otp_vonage
+from .services import generate_otp, send_otp_whatsapp, send_otp_unimax
 from .models import Comment, User, Artisan, Customer, Metier
 from django.utils import timezone
 
@@ -46,7 +46,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         if validate_data["mode"] == "sms":
-            send_otp_vonage(number=validate_data["phone"], otp=otp)
+            send_otp_unimax(number=validate_data["phone"], otp=otp)
         elif validate_data["mode"] == 'whatsapp':
             send_otp_whatsapp(number=validate_data["phone"], otp=otp)
 

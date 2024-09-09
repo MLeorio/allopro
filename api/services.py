@@ -1,61 +1,21 @@
-# from twilio.rest import Client
-import random
-
-import vonage
-
 from dotenv import load_dotenv
 import os
+
+import random
+
+import requests
+import json
 
 load_dotenv()
 
 
 def generate_otp():
-    code = str(random.randint(100000, 999999))
-    return f"{code[:3]}-{code[3:]}"
-
-
-# def send_otp(number, otp):
-#     account_sid = "your_twilio_account_id"
-#     auth_token = "your_twilio_auth_token"
-
-#     client = Client(account_sid, auth_token)
-
-#     message = client.messages.create(
-#         body=f"Votre code de vérification est {otp}",
-#         from_="+123456789",  # Numero Twilio
-#         to=number,
-#     )
-#     return message.sid
-
-
-def send_otp_vonage(number, otp):
-    client = vonage.Client(key=os.environ.get('VONAGE_API_KEY') , secret=os.environ.get('VONAGE_API_SECRET'))
-    sms = vonage.Sms(client)
-
-    responseData = sms.send_message(
-        {
-            "from": "Jobers Artisans",
-            "to": str(number),
-            "text": f"Votre code de vérification est {otp}",
-        }
-    )
-
-    if responseData["messages"][0]["status"] == "0":
-        return("Message envoyé avec succès")
-    else:
-        return(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-
-
-import requests
-import json
-
+    return str(random.randint(100000, 999999))
 
 
 # Envoi de l'otp par whatsapp
 
-url = "https://graph.facebook.com/v20.0/406813785846103/messages"
-
-def send_otp_whatsapp(number:str, otp:str):
+def send_otp_whatsapp(number: str, otp: str):
     payload = json.dumps(
         {
             "messaging_product": "whatsapp",
@@ -65,29 +25,82 @@ def send_otp_whatsapp(number:str, otp:str):
                 "name": "envoi_otp",
                 "language": {"code": "fr"},
                 "components": [
-                    {
-                        "type": "body",
-                        "parameters": [
-                            {
-                                "type": "text",
-                                "text": otp
-                            }
-                        ]
-                    }
+                    {"type": "body", "parameters": [{"type": "text", "text": otp}]}
                 ],
             },
         }
     )
     headers = {
         "Content-Type": "application/json",
-        "Authorization": os.environ.get('WHATSAPP_TOKEN'), # installer dotenv pour gerer la confidentialite des cles...
+        "Authorization": os.environ.get(
+            "WHATSAPP_TOKEN"
+        ),  # installer dotenv pour gerer la confidentialite des cles...
     }
-    
-    response = requests.request("POST", url, headers=headers, data=payload)
-    
+
+    response = requests.request(
+        "POST",
+        os.environ.get("WHATSAPP_API_URL"),
+        headers=headers,
+        data=payload
+    )
+
     if response.status_code == 200:
-        return ("Message envoyé avec succès")
+        return "Message envoyé avec succès"
     else:
-        return(f"Message non envoyé : {response.text}")
+        return f"Message non envoyé : {response.text}"
+
 
 # send_otp_whatsapp("+22891657590", "596-895")
+
+
+# Envoie de sms par Unimatrix
+
+from uni.client import UniClient
+from uni.exception import UniException
+
+
+
+# def send_otp_unimatrix(number: str, otp: str): # methode utilisant le SDK
+#    client = UniClient(os.environ.get("UNIMTX_ACCESS_KEY_ID"))
+#     try:
+#         res = client.messages.send(
+#             {
+#                 "to": number,
+#                 "signature": "AlloProo",
+#                 "templateId": "pub_otp_fr",
+#                 "templateData": {"code": otp},
+#             }
+#         )
+#         print(res.data)
+#     except UniException as e:
+#         print(e)
+
+
+
+def send_otp_unimax(number: str, otp: str): # methode utilisant le lien d'API
+    payload = json.dumps(
+        {
+            "to": number,
+            "text": f"[AlloProo] Votre code de vérification est {otp}."
+        }
+    )
+    headers = {
+        "Content-Type": "application/json",
+        }
+    
+    url = f'https://api.unimtx.com/?action=sms.message.send&accessKeyId={os.environ.get("UNIMTX_ACCESS_KEY_ID")}'
+
+    response = requests.request(
+        "POST",
+        url,
+        headers=headers,
+        data=payload
+    )
+
+    if response.status_code == 200:
+        return "Message envoyé avec succès"
+    else:
+        return f"Message non envoyé : {response.text}"
+
+
+# send_otp_unimax("+22891657590", "596895")

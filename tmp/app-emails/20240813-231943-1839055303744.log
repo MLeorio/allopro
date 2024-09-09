@@ -1,0 +1,28 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Activation de votre compte
+From: noreply@jobers.com
+To: instigator@movie.fun
+Date: Tue, 13 Aug 2024 23:19:43 -0000
+Message-ID: <172359118381.4752.12461601014864928306@Catalina>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation de compte | Jobers App</title>
+</head>
+
+<body>
+    <h1>Bienvenue, instigator</h1>
+    <p>
+        Merci de vous être inscrit. Pour activer votre compte, veuillez cliquer sur le lien ci-desssous :
+    </p>
+    <a href="http://127.0.0.1:8000/api/v1/activate/MTQ/cbq0sv-8dc9a8700173c8fc36b65f1f0dbc890e/">Activer mon compte</a>
+</body>
+
+</html>
+-------------------------------------------------------------------------------

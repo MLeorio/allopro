@@ -1,0 +1,28 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Activation de votre compte
+From: noreply@jobers.com
+To: eric@meusier.tg
+Date: Tue, 13 Aug 2024 23:20:55 -0000
+Message-ID: <172359125585.4752.2326040559169998076@Catalina>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation de compte | Jobers App</title>
+</head>
+
+<body>
+    <h1>Bienvenue, Eric</h1>
+    <p>
+        Merci de vous être inscrit. Pour activer votre compte, veuillez cliquer sur le lien ci-desssous :
+    </p>
+    <a href="http://127.0.0.1:8000/api/v1/activate/MTU/cbq0uv-467988b65ab084f5a6190ee8bcd59716/">Activer mon compte</a>
+</body>
+
+</html>
+-------------------------------------------------------------------------------
